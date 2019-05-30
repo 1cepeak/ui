@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+
+	<title>AGRO24 UI Demo</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+	<link rel="stylesheet" href="http://cdn.a24work.com/ag-ui/latest/css/ag-styles.min.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.8/vue.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+</head>
+<body class="ag-body ag-body--flex ag-ui-2">
+	<div id="app">
+		<ui-table :columns="columns" :items="items">
+			<template slot="product"><a @click="expanded = !expanded">expand</a></template>
+
+			<template v-if="expanded" slot="expanded" slot-scope="props">
+				<tr v-for="(item, index) in subItems" :key="index" class="-unpacked">
+					<td v-for="(a, i) in keys(item)" :key="i">{{ a }}</td>
+				</tr>
+			</template>
+		</ui-table>
+
+		<ui-radio-group v-model="radio">
+			<ui-radio value="2"></ui-radio>
+		</ui-radio-group>
+
+		<ui-notification icon="warning" light alert stretch>
+			test
+		</ui-notification>
+
+		<div v-html="icons" style="height: 0px; width: 0px; position: fixed; visibility: hidden;"></div>
+	</div>
+
+	<script src="/dist/ui.js"></script>
+	<script>
+		Vue.config.devtools = true;
+
+		new Vue({
+			el: '#app',
+			data: {
+				icons: '',
+				columns: [
+					{ key: 'id', title: 'Аукцион', width: '67px', sticky: 'left' },
+					{ key: 'product', title: 'Продукт', width: '800px' },
+					{ key: 'priceParam', title: 'Стартовая цена', width: '800px' },
+					{ key: 'quantityParam', title: 'Количество', width: '800px' },
+					{ key: 'actions', title: '', width: '30px', sticky: 'right' }
+				],
+				items: [
+					{ id: 1, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 2, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 3, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 4, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 5, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 6, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 7, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 8, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 9, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+				],
+				subItems: [
+					{ id: 1, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+					{ id: 2, product: 'product', priceParam: 'price param', quantityParam: 'quantity param', actions: '' },
+				],
+				expanded: false,
+				radio: 1
+			},
+			methods: {
+				log(e) {
+					console.log(e);
+				},
+				toggle() {
+					this.show = !this.show;
+				},
+				keys(item) {
+					return Object.keys(item);
+				}
+			},
+			mounted() {
+				axios.get('https://cdn.agro24.ru/ag-ui/latest/img/icons/_icons-pack.svg').then(({ data }) => {
+					this.icons = data;
+				});
+			}
+		});
+	</script>
+</body>
+</html>

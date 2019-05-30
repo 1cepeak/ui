@@ -1,0 +1,1 @@
+export { default as uiFadeTransition } from './Fade';
